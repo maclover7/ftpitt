@@ -2,7 +2,18 @@
 
 # Appeals
 
-# Assessments
+### Assessments ###
+curl -X GET -G 'https://data.wprdc.org/datastore/dump/f2b8d575-e256-4718-94ad-1e12239ddb92' \
+  --data-urlencode q= \
+  --data-urlencode plain=False \
+  --data-urlencode language=simplesc \
+  --data-urlencode filters={} \
+  --data-urlencode format=tsv \
+  --data-urlencode fields=PARID,PROPERTYHOUSENUM,PROPERTYFRACTION,PROPERTYADDRESS,PROPERTYCITY,PROPERTYSTATE,PROPERTYUNIT,PROPERTYZIP,MUNICODE,MUNIDESC,SCHOOLCODE,SCHOOLDESC,TAXCODE,TAXDESC,CLASS,USECODE,USEDESC,LOTAREA,HOMESTEADFLAG,FARMSTEADFLAG,CLEANGREEN,ABATEMENTFLAG,SALEDATE,SALEPRICE,SALECODE,SALEDESC,DEEDBOOK,DEEDPAGE,CHANGENOTICEADDRESS1,CHANGENOTICEADDRESS2,CHANGENOTICEADDRESS3,CHANGENOTICEADDRESS4,COUNTYBUILDING,COUNTYLAND,COUNTYTOTAL,COUNTYEXEMPTBLDG,LOCALBUILDING,LOCALLAND,LOCALTOTAL,FAIRMARKETBUILDING,FAIRMARKETLAND,FAIRMARKETTOTAL,YEARBLT,CONDITION,CONDITIONDESC,ASOFDATE |
+  sed '1d' |
+  sed '/0460R00117000000.*$/d' |
+  sed '/0389L00052000000.*$/d' |
+  psql -q -d propertydb -c "COPY assessments (parcelid, propertyhousenum, propertyfraction, propertyaddress, propertycity, propertystate, propertyunit, propertyzip, municode, munidesc, schoolcode, schooldesc, taxcode, taxdesc, class, usecode, usedesc, lotarea, homesteadflag, farmsteadflag, cleangreen, abatementflag, saledate, saleprice, salecode, saledesc, deedbook, deedpage, changenoticeaddress1, changenoticeaddress2, changenoticeaddress3, changenoticeaddress4, countybuilding, countyland, countytotal, countyexemptbuilding, localbuilding, localland, localtotal, fairmarketbuilding, fairmarketland, fairmarkettotal, yearbuilt, condition, conditiondesc, asofdate) FROM STDIN DELIMITER E'\t'"
 
 ### Parcel boundaries ###
 curl -X GET -G 'https://data.wprdc.org/datastore/dump/858bbc0f-b949-4e22-b4bb-1a78fef24afc' \
