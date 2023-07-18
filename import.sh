@@ -88,6 +88,7 @@ curl -X GET -G 'https://data.wprdc.org/datastore/dump/d1e80180-5b2e-4dab-8ec3-be
   sed '1d' |
   psql -q -d propertydb -c "COPY parcelliens (parcelid, count, amount) FROM STDIN DELIMITER ','"
 
-# Pittsburgh-owned parcel sales
+### Pittsburgh-owned parcel sales ###
+psql -q -d propertydb -c "\copy parcelsalespgh (parcelid, status, applicant, date) FROM 'rtkl/db-sales-pgh-07052023.csv' CSV HEADER;"
 
 # Parcel violations (Pittsburgh)
