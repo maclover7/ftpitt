@@ -40,9 +40,11 @@ curl -X GET -G 'https://data.wprdc.org/datastore/dump/ed0d1550-c300-4114-865c-82
   sed '1d' |
   psql -q -d propertydb -c "COPY parceldelinquenciespgh (parcelid, prioryears, backtaxes) FROM STDIN DELIMITER ','"
 
-# Pittsburgh-owned parcels
+### Pittsburgh-owned parcels ###
+psql -q -d propertydb -c "\copy parceleproppgh (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-pgh-07122023.csv' CSV HEADER;"
 
-# URA-owned parcels
+### URA-owned parcels ###
+psql -q -d propertydb -c "\copy parcelepropura (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-ura-07062023.csv' CSV HEADER;"
 
 ### Pittsburgh facilities ###
 curl -X GET -G 'https://data.wprdc.org/datastore/dump/fbb50b02-2879-47cd-abea-ae697ec05170' \
