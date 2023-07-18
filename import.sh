@@ -53,6 +53,9 @@ psql -q -d propertydb -c "UPDATE parceleproppgh SET parceltype = 'Hold For Study
 ### URA-owned parcels ###
 psql -q -d propertydb -c "\copy parcelepropura (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-ura-07062023.csv' CSV HEADER;"
 
+# Remove dashes from parcel IDs
+psql -q -d propertydb -c "UPDATE parcelepropura SET parcelid = REPLACE(parcelid, '-', '');"
+
 ### Pittsburgh facilities ###
 curl -X GET -G 'https://data.wprdc.org/datastore/dump/fbb50b02-2879-47cd-abea-ae697ec05170' \
   --data-urlencode q= \
