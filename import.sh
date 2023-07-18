@@ -43,6 +43,13 @@ curl -X GET -G 'https://data.wprdc.org/datastore/dump/ed0d1550-c300-4114-865c-82
 ### Pittsburgh-owned parcels ###
 psql -q -d propertydb -c "\copy parceleproppgh (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-pgh-07122023.csv' CSV HEADER;"
 
+# Replace MBL with long parcelid
+psql -q -d propertydb -c "UPDATE parceleproppgh SET parcelid = CONCAT(to_char((regexp_split_to_array(parcelid, E'-'))[1]::int, 'fm0000'), (regexp_split_to_array(parcelid, E'-'))[2], to_char((regexp_split_to_array(parcelid, E'-'))[3]::int, '00000fm'), '000000') WHERE parcelid LIKE '%-%';"
+
+# for --> For
+psql -q -d propertydb -c "UPDATE parceleproppgh SET parcelstatus = 'Hold For Study' WHERE parcelstatus = 'Hold for Study';"
+psql -q -d propertydb -c "UPDATE parceleproppgh SET parceltype = 'Hold For Study' WHERE parceltype = 'Hold for Study';"
+
 ### URA-owned parcels ###
 psql -q -d propertydb -c "\copy parcelepropura (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-ura-07062023.csv' CSV HEADER;"
 
