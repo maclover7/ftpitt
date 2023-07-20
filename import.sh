@@ -52,7 +52,7 @@ curl -X GET -G 'https://data.wprdc.org/datastore/dump/ed0d1550-c300-4114-865c-82
   psql -q -d propertydb -c "COPY parceldelinquenciespgh (parcelid, prioryears, backtaxes) FROM STDIN DELIMITER ','"
 
 ### Pittsburgh-owned parcels ###
-psql -q -d propertydb -c "\copy parceleproppgh (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-pgh-07122023.csv' CSV HEADER;"
+psql -q -d propertydb -c "\copy parceleproppgh (parcelid, parcelstatus, parceltype) FROM 'rtkl/db-properties-pgh-07122023.csv' CSV HEADER;"
 
 # Replace MBL with long parcelid
 psql -q -d propertydb -c "UPDATE parceleproppgh SET parcelid = CONCAT(to_char((regexp_split_to_array(parcelid, E'-'))[1]::int, 'fm0000'), (regexp_split_to_array(parcelid, E'-'))[2], to_char((regexp_split_to_array(parcelid, E'-'))[3]::int, '00000fm'), '000000') WHERE parcelid LIKE '%-%';"
@@ -62,10 +62,13 @@ psql -q -d propertydb -c "UPDATE parceleproppgh SET parcelstatus = 'Hold For Stu
 psql -q -d propertydb -c "UPDATE parceleproppgh SET parceltype = 'Hold For Study' WHERE parceltype = 'Hold for Study';"
 
 ### URA-owned parcels ###
-psql -q -d propertydb -c "\copy parcelepropura (parcelid, parceltype, parcelstatus) FROM 'rtkl/db-properties-ura-07062023.csv' CSV HEADER;"
+psql -q -d propertydb -c "\copy parcelepropura (parcelid, parcelstatus, parceltype) FROM 'rtkl/db-properties-ura-07062023.csv' CSV HEADER;"
 
 # Remove dashes from parcel IDs
 psql -q -d propertydb -c "UPDATE parcelepropura SET parcelid = REPLACE(parcelid, '-', '');"
+
+# for --> For
+psql -q -d propertydb -c "UPDATE parcelepropura SET parcelstatus = 'Hold For Study' WHERE parcelstatus = 'Hold for Study';"
 
 ### Pittsburgh facilities ###
 curl -X GET -G 'https://data.wprdc.org/datastore/dump/fbb50b02-2879-47cd-abea-ae697ec05170' \
