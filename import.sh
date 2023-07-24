@@ -136,12 +136,12 @@ function import_parcel_sales_owner_pgh() {
 # Parcel violations (Pittsburgh)
 
 ##### Run imports #####
-import_parcel_assessments
-import_parcel_boundaries
-import_parcel_centroids
-import_parcel_delinquencies_pgh
-import_parcels_owner_pgh
-import_parcels_owner_ura
-import_parcel_facilities_pgh
-import_parcel_liens
-import_parcel_sales_owner_pgh
+[[ $* == *--parcel_assessments* ]] && import_parcel_assessments
+[[ $* == *--parcel_boundaries* ]] && import_parcel_boundaries
+[[ $* == *--parcel_centroids* ]] && import_parcel_centroids
+[[ $* == *--parcel_parcel_delinquencies_pgh* ]] && import_parcel_delinquencies_pgh
+[[ $* == *--parcel_parcels_owner_pgh* ]] && import_parcels_owner_pgh
+[[ $* == *--parcel_parcels_owner_ura* ]] && import_parcels_owner_ura
+[[ $* == *--parcel_parcel_facilities_pgh* ]] && import_parcel_facilities_pgh
+[[ $* == *--parcel_liens* ]] && import_parcel_liens
+[[ $* == *--parcel_sales_owner_pgh* ]] && import_parcel_sales_owner_pgh
