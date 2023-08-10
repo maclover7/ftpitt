@@ -54,9 +54,9 @@ function import_parcel_centroids() {
     --data-urlencode language=simplesc \
     --data-urlencode filters={} \
     --data-urlencode format=csv \
-    --data-urlencode fields=PIN,Latitude,Longitude,MAPBLOCKLO |
+    --data-urlencode fields=PIN,Latitude,Longitude,MAPBLOCKLO,geo_name_n |
     sed '1d' |
-    psql -q -d propertydb -c "COPY parcelcentroids (parcelid, lat, lon, parcelmbl) FROM STDIN DELIMITER ','"
+    psql -q -d propertydb -c "COPY parcelcentroids (parcelid, lat, lon, parcelmbl, neighborhood) FROM STDIN DELIMITER ','"
 }
 
 ### Parcel delinquencies (Pittsburgh) ###
