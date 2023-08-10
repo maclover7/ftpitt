@@ -2,6 +2,19 @@
 
 # Appeals
 
+### Appeals outcomes ###
+function import_parcel_appeals_outcomes() {
+  curl -X GET -G 'https://data.wprdc.org/datastore/dump/8e92a566-b52b-4d10-9fb5-c18b883cd926' \
+    --data-urlencode q= \
+    --data-urlencode plain=False \
+    --data-urlencode language=simplesc \
+    --data-urlencode filters={} \
+    --data-urlencode format=tsv \
+    --data-urlencode fields='PARCEL ID,TAX YEAR,TAX STATUS,COMPLAINANT,STATUS,PRE APPEAL TOTAL,POST APPEAL TOTAL, CURRENT TOTAL, LAST UPDATE REASON' |
+    sed '1d' |
+    psql -q -d propertydb -c "COPY parcelappealsoutcomes (parcelid, taxyear, taxstatus, complainant, status, preappealtotal, postappealtotal, currenttotal, lastupdatereason) FROM STDIN DELIMITER ','"
+}
+
 ### Parcel assessments ###
 function import_parcel_assessments() {
   curl -X GET -G 'https://data.wprdc.org/datastore/dump/f2b8d575-e256-4718-94ad-1e12239ddb92' \
@@ -136,6 +149,7 @@ function import_parcel_sales_owner_pgh() {
 # Parcel violations (Pittsburgh)
 
 ##### Run imports #####
+[[ $* == *--parcel_appeals_outcomes* ]] && import_parcel_appeals_outcomes
 [[ $* == *--parcel_assessments* ]] && import_parcel_assessments
 [[ $* == *--parcel_boundaries* ]] && import_parcel_boundaries
 [[ $* == *--parcel_centroids* ]] && import_parcel_centroids
