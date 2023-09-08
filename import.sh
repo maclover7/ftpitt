@@ -146,6 +146,12 @@ function import_parcel_sales_owner_pgh() {
   psql -q -d propertydb -c "\copy parcelsalespgh (parcelid, status, applicant, date) FROM 'rtkl/db-sales-pgh-07052023.csv' CSV HEADER;"
 }
 
+### Pittsburgh parcel zoning ###
+function import_parcel_zoning_pgh() {
+  curl -X GET "https://opendata.arcgis.com/api/v3/datasets/e67592c2904b497b83ccf876fced7979_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1" |
+    ogr2ogr -f PostgreSQL PG:"dbname=propertydb" -append -sql "select zon_new, legendtype, full_zoning_type from Zoning" -nln parcelzoningpgh /vsistdin/
+}
+
 # Parcel violations (Pittsburgh)
 
 ##### Run imports #####
@@ -159,3 +165,4 @@ function import_parcel_sales_owner_pgh() {
 [[ $* == *--parcel_facilities_pgh* ]] && import_parcel_facilities_pgh
 [[ $* == *--parcel_liens* ]] && import_parcel_liens
 [[ $* == *--parcel_sales_owner_pgh* ]] && import_parcel_sales_owner_pgh
+[[ $* == *--parcel_zoning_pgh* ]] && import_parcel_zoning_pgh
