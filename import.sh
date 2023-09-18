@@ -17,7 +17,7 @@ function import_parcel_appeals_outcomes() {
 
 ### Parcel assessments ###
 function import_parcel_assessments() {
-  curl -X GET -G 'https://data.wprdc.org/datastore/dump/f2b8d575-e256-4718-94ad-1e12239ddb92' \
+  curl -X GET -G 'https://data.wprdc.org/datastore/dump/property_assessments_table' \
     --data-urlencode q= \
     --data-urlencode plain=False \
     --data-urlencode language=simplesc \
