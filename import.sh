@@ -158,6 +158,12 @@ function import_council_pgh() {
     ogr2ogr -f PostgreSQL PG:"dbname=propertydb" -append -sql 'select DIST_NAME from "Pittsburgh_Council_Districts_2022_(Current)"' -nln councilpgh /vsistdin/
 }
 
+### Pittsburgh neighborhoods ###
+function import_neighborhood_pgh() {
+  curl -X GET "https://opendata.arcgis.com/api/v3/datasets/dbd133a206cc4a3aa915cb28baa60fd4_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1" |
+    ogr2ogr -f PostgreSQL PG:"dbname=propertydb" -append -sql 'select HOOD AS nabename from "Neighborhoods_"' -nln neighborhoodpgh /vsistdin/
+}
+
 # Parcel violations (Pittsburgh)
 
 ##### Run imports #####
@@ -173,3 +179,4 @@ function import_council_pgh() {
 [[ $* == *--parcel_sales_owner_pgh* ]] && import_parcel_sales_owner_pgh
 [[ $* == *--parcel_zoning_pgh* ]] && import_parcel_zoning_pgh
 [[ $* == *--council_pgh* ]] && import_council_pgh
+[[ $* == *--neighborhood_pgh* ]] && import_neighborhood_pgh
